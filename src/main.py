@@ -46,7 +46,7 @@ for i in range(20):
         df = get_data()
     except df is None:
         print("No data found " + time_str)
-        time.sleep(3600)
+        time.sleep(900)
         continue
 
     # add to main dataframe, drop duplicates
