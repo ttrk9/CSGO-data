@@ -1,6 +1,8 @@
 import requests
 import pandas as pd
 import time
+import logging
+import logging.handlers
 
 
 main_df = None
@@ -35,7 +37,39 @@ def get_data():
     return df
 
 
-# get data every 1 hour, if new data is available
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+logger_file_handler = logging.handlers.RotatingFileHandler(
+    "status.log",
+    maxBytes=1024 * 1024,
+    backupCount=1,
+    encoding="utf8",
+)
+formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+logger_file_handler.setFormatter(formatter)
+logger.addHandler(logger_file_handler)
+
+if __name__ == "__main__":
+    df = None
+    try:
+        df = get_data()
+    except df is None:
+        logging.info("No data found")
+        # wait 5 minutes and execute script again
+
+    # add to main dataframe, drop duplicates
+    main_df = pd.concat([main_df, df], ignore_index=True)
+
+    if main_df.duplicated().any():
+        logging.info("No new data")
+        main_df = main_df.drop_duplicates()
+    else:
+        logging.info("New data available")
+
+    main_df.to_csv("main_data.csv", index=False)
+
+
+"""# get data every 1 hour, if new data is available
 time_str = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 print("Starting at " + time_str)
 
@@ -60,4 +94,4 @@ for i in range(20):
 
     main_df.to_csv("main_data.csv", index=False)
 
-    time.sleep(3600)
+    time.sleep(3600)"""
