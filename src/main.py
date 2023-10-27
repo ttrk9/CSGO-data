@@ -54,17 +54,17 @@ if __name__ == "__main__":
     try:
         df = get_data()
     except df is None:
-        logging.info("No data found")
+        logger.info("No data found")
         # wait 5 minutes and execute script again
 
     # add to main dataframe, drop duplicates
     main_df = pd.concat([main_df, df], ignore_index=True)
 
     if main_df.duplicated().any():
-        logging.info("No new data")
+        logger.info("No new data")
         main_df = main_df.drop_duplicates()
     else:
-        logging.info("New data available")
+        logger.info("New data available")
 
     main_df.to_csv("main_data.csv", index=False)
 
