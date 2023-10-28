@@ -2,8 +2,8 @@ name: run main.py
 
 on:
   schedule:
-  # run every 10 minutes
-    - cron: '*/10 * * * *'
+  # run every 30 minutes
+    - cron: '0,30 * * * *'
 
 jobs:
   build:
@@ -31,7 +31,7 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add -A
-          git diff-index --quiet HEAD || (git commit -a -m "checked API" --allow-empty)
+          git diff-index --quiet HEAD || (git commit -a -m "updating log and checking API" --allow-empty)
 
       - name: push changes
         uses: ad-m/github-push-action@v0.6.0
