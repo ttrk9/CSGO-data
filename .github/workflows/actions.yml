@@ -2,8 +2,8 @@ name: run main.py
 
 on:
   schedule:
-  # run every 45 minutes
-    - cron: '*/45 * * * *'
+  # run every 30 minutes
+    - cron: '0,30 * * * *'
 
 jobs:
   build:
